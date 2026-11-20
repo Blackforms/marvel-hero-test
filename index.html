@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나와 닮은 마블 히어로는? | MBTI 히어로 테스트</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:radial-gradient(circle at top,#3a0d12 0%,#12070a 60%,#000 100%);color:#fff;min-height:100vh;display:flex;justify-content:center;padding:24px 14px}
+  .wrap{width:100%;max-width:480px}
+  .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:28px 22px;backdrop-filter:blur(6px);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  .hide{display:none}
+  .logo{display:inline-block;background:#e23636;color:#fff;font-weight:900;letter-spacing:2px;padding:6px 12px;border-radius:4px;font-size:14px}
+  h1{font-size:28px;line-height:1.3;margin:16px 0 10px}
+  h1 b{color:#f5c518}
+  .sub{color:#cfc3c5;font-size:15px;line-height:1.6;margin-bottom:22px}
+  .heroes{font-size:30px;letter-spacing:4px;margin:14px 0 24px;text-align:center}
+  .btn{display:block;width:100%;border:none;border-radius:14px;padding:16px;font-size:17px;font-weight:700;cursor:pointer;transition:.15s}
+  .btn-main{background:linear-gradient(90deg,#e23636,#b11226);color:#fff}
+  .btn-main:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(226,54,54,.5)}
+  .btn-sub{background:rgba(255,255,255,.1);color:#fff;margin-top:10px}
+  .bar{height:8px;background:rgba(255,255,255,.12);border-radius:8px;overflow:hidden;margin-bottom:8px}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#f5c518,#e23636);transition:width .3s}
+  .count{font-size:13px;color:#cfc3c5;text-align:right;margin-bottom:20px}
+  .qno{color:#f5c518;font-weight:800;font-size:14px}
+  .q{font-size:20px;line-height:1.5;font-weight:700;margin:8px 0 24px;min-height:90px;word-break:keep-all}
+  .opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff;border-radius:14px;padding:16px;font-size:16px;line-height:1.5;margin-bottom:12px;cursor:pointer;transition:.15s;word-break:keep-all}
+  .opt:hover{background:rgba(226,54,54,.25);border-color:#e23636}
+  .back{background:none;border:none;color:#cfc3c5;font-size:14px;cursor:pointer;margin-top:6px}
+  .loading{text-align:center;padding:60px 0}
+  .spin{width:56px;height:56px;border:5px solid rgba(255,255,255,.15);border-top-color:#f5c518;border-radius:50%;margin:0 auto 20px;animation:s 1s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+  .r-emoji{font-size:80px;text-align:center}
+  .r-img{display:block;width:100%;max-height:420px;object-fit:cover;object-position:top;border-radius:16px;margin-bottom:14px;border:2px solid #f5c518}
+  .match img{width:64px;height:64px;border-radius:50%;object-fit:cover;object-position:top;display:block;margin:6px auto}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:14px 0 22px}
+  .grid img{width:100%;aspect-ratio:1;object-fit:cover;object-position:top;border-radius:10px}
+  .r-type{text-align:center;color:#f5c518;font-weight:800;letter-spacing:3px;margin-top:6px}
+  .r-name{text-align:center;font-size:30px;font-weight:900;margin:4px 0}
+  .r-title{text-align:center;color:#cfc3c5;margin-bottom:20px}
+  .quote{background:rgba(245,197,24,.1);border-left:4px solid #f5c518;padding:12px 14px;border-radius:8px;font-style:italic;margin-bottom:18px;line-height:1.5}
+  .sec{margin-bottom:18px}
+  .sec h3{font-size:15px;color:#f5c518;margin-bottom:8px}
+  .sec p,.sec li{font-size:15px;line-height:1.7;color:#eee;word-break:keep-all}
+  .sec ul{padding-left:18px}
+  .axis{display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:8px}
+  .axis span{width:62px;text-align:center}
+  .axis .t{flex:1;height:10px;background:rgba(255,255,255,.12);border-radius:10px;overflow:hidden;display:flex}
+  .axis .t i{background:#e23636;height:100%}
+  .match{display:flex;gap:10px}
+  .match div{flex:1;background:rgba(255,255,255,.07);border-radius:12px;padding:12px;text-align:center;font-size:14px;line-height:1.5}
+  .match b{display:block;font-size:26px}
+  .foot{text-align:center;color:#8d8183;font-size:12px;margin-top:16px;line-height:1.6}
+  .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#f5c518;color:#000;padding:10px 18px;border-radius:20px;font-weight:700;opacity:0;transition:.3s}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- 시작 -->
+  <div id="start" class="card">
+    <span class="logo">HERO TEST</span>
+    <h1>나와 닮은<br><b>마블 히어로</b>는 누구?</h1>
+    <p class="sub">MBTI 4가지 성향을 기준으로 질문 20개에 답하면<br>16명의 히어로 중 당신과 가장 닮은 캐릭터를 찾아드려요.</p>
+    <div class="grid" id="grid"></div>
+    <button class="btn btn-main" onclick="startTest()">테스트 시작하기</button>
+    <p class="foot">소요 시간 약 3분 · 정답은 없어요, 솔직하게!</p>
+  </div>
+
+  <!-- 질문 -->
+  <div id="quiz" class="card hide">
+    <div class="bar"><i id="prog"></i></div>
+    <div class="count" id="count">1 / 20</div>
+    <div class="qno" id="qno">Q1</div>
+    <div class="q" id="qtext"></div>
+    <button class="opt" id="optA" onclick="answer(0)"></button>
+    <button class="opt" id="optB" onclick="answer(1)"></button>
+    <button class="back" id="backBtn" onclick="goBack()">← 이전 질문</button>
+  </div>
+
+  <!-- 분석중 -->
+  <div id="loading" class="card hide">
+    <div class="loading"><div class="spin"></div><p>어벤져스 데이터베이스에서<br>당신과 닮은 히어로를 찾는 중...</p></div>
+  </div>
+
+  <!-- 결과 -->
+  <div id="result" class="card hide">
+    <img class="r-img" id="rImg" alt=""><div class="r-emoji hide" id="rEmoji"></div>
+    <div class="r-type" id="rType"></div>
+    <div class="r-name" id="rName"></div>
+    <div class="r-title" id="rTitle"></div>
+    <div class="quote" id="rQuote"></div>
+    <div class="sec"><h3>📌 이런 사람이에요</h3><p id="rDesc"></p></div>
+    <div class="sec"><h3>💪 강점</h3><ul id="rGood"></ul></div>
+    <div class="sec"><h3>⚠️ 약점</h3><ul id="rBad"></ul></div>
+    <div class="sec"><h3>📊 나의 성향</h3><div id="rAxis"></div></div>
+    <div class="sec"><h3>🤝 히어로 궁합</h3>
+      <div class="match">
+        <div><small>찰떡 동료</small><img id="mGoodI" alt=""><b id="mGoodE" class="hide"></b><span id="mGood"></span></div>
+        <div><small>상극 라이벌</small><img id="mBadI" alt=""><b id="mBadE" class="hide"></b><span id="mBad"></span></div>
+      </div>
+    </div>
+    <button class="btn btn-main" onclick="share()">결과 공유하기</button>
+    <button class="btn btn-sub" onclick="restart()">다시 하기</button>
+    <p class="foot">※ 팬이 만든 비공식 재미용 테스트입니다. 캐릭터 MBTI는 팬 커뮤니티 해석을 참고했어요.</p>
+  </div>
+</div>
+<div class="toast" id="toast">복사됐어요!</div>
+
+<script>
+// ───── 질문 20개 (축별 5개, 홀수라 동점 없음) ─────
+// a: 첫 번째 보기 성향, b: 두 번째 보기 성향
+const Q = [
+  // E / I
+  {q:"타노스를 막아낸 날 밤, 어벤져스 축하 파티가 열렸다. 나는?", A:"파티 한가운데서 건배사부터 외친다 🥂", B:"몇 명이랑 구석에서 조용히 슈와마 먹는다 🌯", a:"E", b:"I"},
+  {q:"새로운 팀에 합류한 첫날. 나의 모습은?", A:"먼저 말 걸고 벌써 별명까지 지어준다", B:"일단 누가 어떤 사람인지 관찰부터 한다", a:"E", b:"I"},
+  {q:"임무 없는 완벽한 휴일이 생겼다!", A:"동료들 불러서 같이 놀러 나간다", B:"혼자 집(혹은 연구실)에서 충전한다", a:"E", b:"I"},
+  {q:"작전 회의 중 좋은 아이디어가 떠올랐다.", A:"말하면서 생각을 정리한다. 일단 던지고 본다", B:"머릿속으로 완성한 뒤에 말한다", a:"E", b:"I"},
+  {q:"전 세계 생중계 기자회견에 히어로 대표로 나가야 한다.", A:"오히려 좋아. 마이크 줘봐 🎤", B:"제발 다른 사람이 나가줬으면…", a:"E", b:"I"},
+  // S / N
+  {q:"새 슈트(장비)를 지급받았다. 가장 먼저 하는 일은?", A:"매뉴얼대로 기능 하나씩 테스트", B:"이걸 어떻게 개조할지 아이디어부터 떠오름", a:"S", b:"N"},
+  {q:"까다로운 작전을 짜야 한다.", A:"이미 검증된 확실한 방법으로 간다", B:"아무도 안 해본 기발한 방법을 시도한다", a:"S", b:"N"},
+  {q:"닥터 스트레인지가 '1400만 605개의 미래를 봤다'고 말한다.", A:"그래서 지금 당장 우리가 할 일이 뭔데?", B:"나머지 미래들은 어땠을지 상상에 빠진다", a:"S", b:"N"},
+  {q:"새로운 빌런에 대한 브리핑을 듣는다. 더 궁금한 건?", A:"능력치, 위치, 병력 같은 구체적인 사실", B:"왜 이런 짓을 하는지, 진짜 노리는 큰 그림", a:"S", b:"N"},
+  {q:"눈앞에 멀티버스로 통하는 문이 열렸다!", A:"우리 우주 문제부터 해결하고 생각하자", B:"일단 들어가 본다. 다른 우주의 나 궁금하잖아", a:"S", b:"N"},
+  // T / F
+  {q:"동료의 실수로 작전이 꼬여버렸다. 내 첫마디는?", A:"\"어디서부터 잘못됐는지 짚어보자.\"", B:"\"괜찮아? 다친 데는 없어?\"", a:"T", b:"F"},
+  {q:"히어로 활동을 정부가 통제하는 협정에 서명할지 정해야 한다.", A:"피해 통계와 결과를 따져 합리적으로 판단", B:"동료들과 내가 지키고 싶은 가치를 먼저 생각", a:"T", b:"F"},
+  {q:"오랜 친구가 세뇌되어 적이 되었다.", A:"위협이 된다면, 친구라도 막아야 한다", B:"끝까지 설득해서 반드시 되찾아 온다", a:"T", b:"F"},
+  {q:"동료에게 듣고 싶은 칭찬은?", A:"\"역시 네가 제일 유능해\"", B:"\"너 덕분에 힘이 났어\"", a:"T", b:"F"},
+  {q:"팀원 둘이 크게 의견 충돌 중이다.", A:"논리적으로 더 맞는 쪽 손을 들어준다", B:"일단 분위기부터 풀고 둘 다 달랜다", a:"T", b:"F"},
+  // J / P
+  {q:"내일 중요한 임무가 있다. 오늘 밤 나는?", A:"장비·동선·플랜B까지 체크리스트 완성", B:"대충 그림만 그려두고 현장에서 판단", a:"J", b:"P"},
+  {q:"작전 도중 계획이 완전히 틀어졌다!", A:"으… 스트레스. 빨리 계획을 다시 세운다", B:"오히려 재밌어지는데? 즉흥 모드 ON", a:"J", b:"P"},
+  {q:"가디언즈와 함께 우주여행을 떠나게 됐다.", A:"행성별 일정표부터 짠다", B:"우주선 타고 끌리는 데로 간다", a:"J", b:"P"},
+  {q:"닉 퓨리가 일주일 뒤까지 보고서를 내라고 했다.", A:"미리미리 나눠서 끝내 놓는다", B:"마감 직전 폭발적인 집중력으로 해치운다", a:"J", b:"P"},
+  {q:"나의 작업실(혹은 방) 상태는?", A:"모든 게 제자리. 찾는 데 3초", B:"남들 눈엔 혼돈, 나만 아는 질서", a:"J", b:"P"}
+];
+
+// ───── 16 히어로 ─────
+const H = {
+  INTJ:{e:"🔮",n:"닥터 스트레인지",t:"수천 수를 내다보는 전략가",qt:"\"이게 유일한 방법이었어.\"",d:"남들이 눈앞의 문제를 볼 때 당신은 그 너머의 결말을 봅니다. 혼자 깊이 파고들어 답을 찾고, 한번 정한 계획은 흔들림 없이 밀고 나가요. 겉으로는 차가워 보여도 큰 그림을 위해 묵묵히 희생할 줄 아는 타입.",g:["압도적인 분석력과 장기 계획","혼자서도 끝까지 파고드는 집중력","위기에서 흔들리지 않는 침착함"],b:["설명 없이 혼자 결정해서 오해를 산다","남의 비효율을 잘 못 참는다"],m:"ISTJ",x:"ESFP"},
+  INTP:{e:"🧪",n:"브루스 배너",t:"호기심 많은 천재 과학자",qt:"\"그게 내 비밀이야. 난 항상 화가 나 있거든.\"",d:"질문이 생기면 답을 찾을 때까지 놓지 못하는 사람. 조용하고 온화하지만 머릿속은 늘 이론과 가설로 가득해요. 감정을 꾹꾹 눌러두는 편이라 가끔 예상 못 한 순간에 폭발하기도.",g:["복잡한 문제를 단순하게 푸는 사고력","편견 없이 새로운 생각을 받아들임","겸손하고 온화한 태도"],b:["생각만 하다 실행이 늦어진다","쌓아둔 감정이 한 번에 터진다"],m:"ENTP",x:"ESTJ"},
+  ENTJ:{e:"✨",n:"캡틴 마블",t:"거침없이 돌파하는 사령관",qt:"\"난 너한테 증명할 필요 없어.\"",d:"목표가 정해지면 정면으로 돌파하는 추진력의 화신. 남의 기준이나 평가에 흔들리지 않고 스스로 한계를 깨부숴요. 자신감 넘치는 리더십으로 팀을 이끌지만, 가끔 혼자 다 해버리려는 게 문제.",g:["강력한 추진력과 결단력","자기 확신과 회복탄력성","위기에 앞장서는 리더십"],b:["다른 사람 속도를 기다려주지 못한다","도움 요청을 잘 안 한다"],m:"INTP",x:"ISFP"},
+  ENTP:{e:"🦾",n:"아이언맨",t:"말빨과 아이디어의 천재",qt:"\"나는 아이언맨이다.\"",d:"번뜩이는 아이디어와 재치 있는 입담으로 어디서든 주목받는 사람. 규칙보다 가능성에 끌리고, 안 된다는 말을 들으면 오히려 불타올라요. 장난스러워 보여도 소중한 사람을 위해선 모든 걸 거는 타입.",g:["누구도 못 떠올린 발상","순발력과 위트","불가능을 가능하게 만드는 도전 정신"],b:["진지한 순간에도 농담이 먼저 나온다","충동적으로 일을 크게 벌인다"],m:"INFJ",x:"ISFJ"},
+  INFJ:{e:"💎",n:"비전",t:"조용히 세상을 꿰뚫는 현자",qt:"\"인간은 이상해. 그래서 아름다워.\"",d:"말수는 적지만 사람과 세상을 깊이 이해하는 통찰가. 옳은 것에 대한 신념이 확고하고, 소중한 사람에게는 한없이 헌신해요. 다들 당신에게 고민 상담을 하러 오는 이유가 있죠.",g:["사람의 본심을 읽는 통찰력","흔들리지 않는 신념","깊고 진실한 애정"],b:["혼자 끙끙 앓는다","완벽한 이상을 추구하다 지친다"],m:"ENTP",x:"ESTP"},
+  INFP:{e:"🔴",n:"스칼렛 위치 (완다)",t:"감정이 곧 힘이 되는 몽상가",qt:"\"슬픔이 뭐겠어, 계속되는 사랑이 아니면.\"",d:"누구보다 깊게 느끼고, 그 감정이 곧 당신의 힘이에요. 자신만의 내면 세계가 풍부하고 사랑하는 것을 지키기 위해선 상상 이상의 힘을 발휘합니다. 상처를 잘 받지만 그만큼 진심인 사람.",g:["풍부한 감수성과 상상력","사랑하는 것에 대한 강한 헌신","남의 아픔에 진심으로 공감"],b:["감정에 휩쓸리면 현실을 외면한다","상처를 오래 품는다"],m:"ENFJ",x:"ESTJ"},
+  ENFJ:{e:"🐆",n:"블랙 팬서",t:"모두를 품는 왕",qt:"\"와칸다 포에버!\"",d:"자신보다 공동체를 먼저 생각하는 타고난 리더. 사람들의 가능성을 믿고 이끌어주며, 옳은 일이라면 전통도 바꿀 용기가 있어요. 당신이 있는 곳엔 자연스럽게 사람이 모입니다.",g:["사람을 하나로 모으는 카리스마","책임감과 품격","적에게도 손 내미는 포용력"],b:["모든 짐을 혼자 짊어진다","남의 기대에 너무 신경 쓴다"],m:"INFP",x:"ISTP"},
+  ENFP:{e:"🎧",n:"스타로드",t:"분위기 메이커 자유영혼",qt:"\"우린 루저들이야. 하지만 함께라면!\"",d:"어디서든 음악 틀고 춤출 수 있는 낙천주의자. 엉뚱하고 즉흥적이지만 사람을 끌어당기는 매력이 있어 어느새 팀의 중심이 돼요. 계획은 없어도 정과 의리는 넘칩니다.",g:["어떤 분위기도 살리는 에너지","사람을 이어주는 친화력","포기하지 않는 낙천성"],b:["감정적으로 일을 그르칠 때가 있다","계획성 제로"],m:"INTJ",x:"ISTJ"},
+  ISTJ:{e:"🏹",n:"호크아이",t:"묵묵한 원칙주의 프로",qt:"\"우리 다 미쳤어. 그래도 할 일은 해야지.\"",d:"화려하진 않아도 맡은 일은 반드시 해내는 믿음직한 사람. 가족과 약속을 무엇보다 중요하게 여기고, 말보다 결과로 보여줘요. 팀에 꼭 한 명은 있어야 하는 든든한 기둥.",g:["끝까지 책임지는 성실함","정확하고 꼼꼼한 실행력","변치 않는 의리"],b:["변화에 적응하는 데 시간이 걸린다","속마음을 잘 표현하지 않는다"],m:"INTJ",x:"ENFP"},
+  ISFJ:{e:"🛡️",n:"캡틴 아메리카",t:"끝까지 지키는 수호자",qt:"\"하루 종일이라도 할 수 있어.\"",d:"옳은 일을 위해서라면 혼자 남더라도 물러서지 않는 사람. 겸손하고 다정하며, 한 번 맺은 인연은 끝까지 지켜요. 당신 곁에 있으면 이상하게 마음이 놓인다는 말, 자주 듣죠?",g:["흔들리지 않는 도덕심","동료를 끝까지 챙기는 의리","꾸준함과 인내심"],b:["원칙 때문에 융통성이 부족할 때가 있다","자기 희생이 지나치다"],m:"ESFJ",x:"ENTP"},
+  ESTJ:{e:"🕶️",n:"닉 퓨리",t:"판을 짜는 총사령관",qt:"\"나는 팀을 꾸리는 중이다.\"",d:"혼란 속에서 질서를 만들고 사람을 적재적소에 배치하는 관리자. 냉정해 보여도 조직과 사람을 지키기 위한 판단이에요. 일단 당신이 맡으면 일은 굴러갑니다.",g:["조직을 움직이는 실행력","위기 상황의 빠른 판단","확실한 책임감"],b:["비밀이 많아 신뢰를 잃기도 한다","통제하려는 성향이 강하다"],m:"ISFJ",x:"INFP"},
+  ESFJ:{e:"🕷️",n:"스파이더맨",t:"친절한 이웃집 히어로",qt:"\"큰 힘에는 큰 책임이 따른다.\"",d:"주변 사람을 챙기는 게 자연스러운 따뜻한 사람. 거창한 일보다 동네 할머니 길 건너드리는 일에도 진심이에요. 인정받고 싶은 마음도 크지만, 그만큼 책임감도 큽니다.",g:["주변을 살피는 다정함","책임감과 성실함","누구와도 잘 어울리는 사교성"],b:["남의 시선을 많이 신경 쓴다","혼자 다 해결하려다 일이 커진다"],m:"ISFJ",x:"INTP"},
+  ISTP:{e:"🕸️",n:"블랙 위도우",t:"냉철한 해결사",qt:"\"내 장부에 빨간 줄이 있어. 그걸 지우고 싶어.\"",d:"말보다 행동, 감정보다 판단이 앞서는 프로페셔널. 어떤 상황에서도 침착하게 최선의 수를 찾아내요. 쉽게 마음을 열지 않지만, 한번 '내 사람'이 되면 목숨까지 겁니다.",g:["위기에서의 침착함과 순발력","뛰어난 상황 판단력","말없이 해내는 실력"],b:["감정 표현이 서툴다","과거를 혼자 짊어진다"],m:"ESTJ",x:"ENFJ"},
+  ESTP:{e:"🦝",n:"로켓",t:"일단 저지르는 행동파",qt:"\"계획? 계획은 있어. 대충 12%쯤.\"",d:"생각보다 손이 먼저 나가는 현장형 천재. 위험할수록 눈이 반짝이고, 즉석에서 뚝딱 해결책을 만들어내요. 말은 거칠어도 동료 곁을 절대 떠나지 않는 츤데레.",g:["즉각적인 실행력과 손재주","위기를 즐기는 대담함","현실적인 문제 해결"],b:["말이 너무 직설적이다","규칙을 무시하고 사고를 친다"],m:"ISFP",x:"INFJ"},
+  ESFP:{e:"⚡",n:"토르",t:"흥 넘치는 천둥의 신",qt:"\"또 다른 걸 가져와!\"",d:"등장만으로 분위기를 바꾸는 타고난 스타. 즐거움과 사람을 사랑하고, 순간에 충실하게 살아요. 허당 같아도 진짜 위기 앞에서는 누구보다 강해지는 사람.",g:["밝은 에너지와 유머","솔직하고 뒤끝 없음","위기에서 터지는 잠재력"],b:["진지함이 부족해 보일 때가 있다","충동적으로 행동한다"],m:"ISTP",x:"INTJ"},
+  ISFP:{e:"🌳",n:"그루트",t:"말보다 마음으로 말하는 사람",qt:"\"아이 엠 그루트.\"",d:"말수는 적어도 행동 하나하나에 따뜻함이 묻어나는 사람. 조용히 곁을 지키다 결정적인 순간에 모든 걸 내어줘요. 당신의 진가는 오래 볼수록 드러납니다.",g:["말없이 전하는 깊은 다정함","순수하고 꾸밈없는 마음","결정적인 순간의 희생정신"],b:["표현이 적어 오해를 받는다","갈등을 피하려 참는다"],m:"ESTP",x:"ENTJ"}
+};
+
+let cur = 0, ans = [];
+document.addEventListener("DOMContentLoaded",()=>{document.getElementById("grid").innerHTML=Object.keys(H).map(k=>`<img src="img/${k}.jpg" alt="${H[k].n}">`).join("")});
+const $ = id => document.getElementById(id);
+function show(id){["start","quiz","loading","result"].forEach(s=>$(s).classList.toggle("hide",s!==id));window.scrollTo(0,0)}
+
+function startTest(){cur=0;ans=[];show("quiz");render()}
+function render(){
+  const q=Q[cur];
+  $("qno").textContent="Q"+(cur+1);
+  $("qtext").textContent=q.q;
+  $("optA").textContent=q.A;
+  $("optB").textContent=q.B;
+  $("count").textContent=(cur+1)+" / "+Q.length;
+  $("prog").style.width=(cur/Q.length*100)+"%";
+  $("backBtn").style.visibility=cur?"visible":"hidden";
+}
+function answer(i){
+  ans[cur]=i===0?Q[cur].a:Q[cur].b;
+  if(++cur<Q.length) render();
+  else {$("prog").style.width="100%";show("loading");setTimeout(finish,1800)}
+}
+function goBack(){if(cur>0){cur--;render()}}
+
+function finish(){
+  const c={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  ans.forEach(a=>c[a]++);
+  const type=(c.E>c.I?"E":"I")+(c.S>c.N?"S":"N")+(c.T>c.F?"T":"F")+(c.J>c.P?"J":"P");
+  showResult(type,c);
+  saveResult(type);
+}
+
+function showResult(type,c){
+  const h=H[type];
+  $("rImg").src="img/"+type+".jpg"; $("rEmoji").textContent=h.e; $("rType").textContent=type;
+  $("rName").textContent=h.n;  $("rTitle").textContent=h.t;
+  $("rQuote").textContent=h.qt; $("rDesc").textContent=h.d;
+  $("rGood").innerHTML=h.g.map(x=>"<li>"+x+"</li>").join("");
+  $("rBad").innerHTML=h.b.map(x=>"<li>"+x+"</li>").join("");
+  const ax=[["E","I","외향","내향"],["S","N","감각","직관"],["T","F","사고","감정"],["J","P","계획","즉흥"]];
+  $("rAxis").innerHTML=c?ax.map(([a,b,la,lb])=>{const p=Math.round(c[a]/(c[a]+c[b])*100);
+    return `<div class="axis"><span>${la} ${p}%</span><div class="t"><i style="width:${p}%"></i></div><span>${lb} ${100-p}%</span></div>`}).join(""):"";
+  $("mGoodI").src="img/"+h.m+".jpg"; $("mGoodE").textContent=H[h.m].e; $("mGood").textContent=H[h.m].n;
+  $("mBadI").src="img/"+h.x+".jpg"; $("mBadE").textContent=H[h.x].e;  $("mBad").textContent=H[h.x].n;
+  show("result");
+}
+
+// 구글 앱스 스크립트로 올리면 결과가 시트에 저장됨 (로컬에서 열면 그냥 건너뜀)
+function saveResult(type){
+  if(window.google&&google.script&&google.script.run){
+    google.script.run.saveResult(type,H[type].n,ans.join(""));
+  }
+}
+
+function share(){
+  const type=$("rType").textContent, h=H[type];
+  const text=`나와 닮은 마블 히어로는 ${h.e} ${h.n} (${type})!\n"${h.t}"\n너도 해봐 👉 ${location.href.split("#")[0]}`;
+  if(navigator.share){navigator.share({title:"마블 히어로 테스트",text}).catch(()=>{})}
+  else{navigator.clipboard.writeText(text).then(()=>{$("toast").classList.add("on");setTimeout(()=>$("toast").classList.remove("on"),1500)})}
+}
+function restart(){show("start")}
+</script>
+</body>
+</html>
